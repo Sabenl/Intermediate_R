@@ -1,2 +1,2 @@
-# Intermediate_R_Reproducibility
+# Intermediate_R
 Reproducibility with renv, rmarkdown and git
