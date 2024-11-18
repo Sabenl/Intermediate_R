@@ -55,3 +55,7 @@ plot_iris1 <- ggplot(data=data_iris, aes(Sepal.Length, y=Sepal.Width, color=Spec
   ggtitle("Sepal Length and Width by Species") +
   theme_bw()
 plot_iris1_facet <- plot_iris1 + facet_grid(. ~ Species)
+
+ggsave(filename = "Assignment_1/Figures/Iris_facet_species.png", plot = last_plot(), dpi = 300)
+
+
