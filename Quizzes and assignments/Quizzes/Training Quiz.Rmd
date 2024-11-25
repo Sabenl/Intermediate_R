@@ -9,6 +9,7 @@ output: html_document
 
 ```{r}
 library(tidyverse)
+library(purrr)
 ```
 
 
@@ -20,7 +21,8 @@ The list.files() function in R is used to list the files in a specified director
 # Use list.files() function to extract the paths of all CSV files from the folder "timeseries_data" and its subfolders.
 
 # Your code here
-files_list <- ________(______, pattern = ________, full.names = TRUE, recursive = T)
+
+files_list <- list.files("timeseries_data", pattern = "\\.csv", full.names = TRUE, recursive = T)
 files_list
 
 ```
@@ -33,7 +35,7 @@ The map() function is part of the purrr package in R. It applies a function to e
 # Use map() function together with files_list from the previous step to read each CSV file into a list of data frames.
 
 # Your code here
-data_list <- ____(files_list, ~ ______(______))
+data_list <- map(files_list, ~ read_csv(.x))
 data_list
 
 ```
@@ -49,8 +51,9 @@ The basename() function is a base R function that extracts the file name from a 
 # Print head of data frames in a list and see what happens.
 
 # Your code here
-data_list_named <-  data_list %>% set_names(______(basename(______), "\\.csv"))
-____(data_list_named, ~head(____, 5))
+data_list_named <-  data_list %>% set_names(str_remove(basename(files_list), "\\.csv"))
+map(data_list_named, ~head(.x, 5))
+
 
 ```
 
