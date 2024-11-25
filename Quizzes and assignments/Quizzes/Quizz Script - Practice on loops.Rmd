@@ -1,0 +1,100 @@
+---
+title: "Quizz - Practice Loops"
+author: "Billy"
+date: "2023-11-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Practice Loops
+The first section of code provides you with the different loops used for the practice quiz. Make note that each loop is encapsulated in a function for easy reuse. After finishing the quiz feel free to the loops yourself to explore use-cases.
+
+```{r "loop creation"}
+# For loop 1
+for_1 <- function (x) {
+  y <- c()
+  for (i in 1:length(x)) {
+    y <- c(y, i)
+  }
+  return(y)
+}
+
+for_1(1:10)
+for_1(letters)
+
+# For loop 2
+for_2 <- function (x) {
+  y <- c()
+  for (i in x) {
+    y <- c(y, i)
+  }
+  return(y)
+}
+
+for_2(1:10)
+for_2(letters)
+
+# While loop 1
+while_1 <- function (x, i, z) {
+  y <- c()
+  while(i < z) {
+    y <- c(y, x[i])
+    i <- i + 1
+  }
+}
+
+# For loop 3
+for_3 <- function(x, z) {
+  y <- c()
+  for (i in x) {
+    if (i == z) {
+      break
+    }
+    y <- c(y, i)
+  }
+  return(y)
+}
+
+for_3(1:30, 18)
+for_3(letters, 10)
+
+# For loop 4
+for_4 <- function(x, z) {
+  y <- c()
+  for (i in x) {
+    if (i == z) {
+      return(y)
+    }
+    y <- c(y, i)
+  }
+  return(-1)
+}
+
+for_4(1:30, 18)
+for_4(letters, 10)
+
+# For loop 5
+for_5 <- function(x, z) {
+  y <- c()
+  for (i in x) {
+    if (i == z) {
+      next
+    }
+    y <- c(y, i)
+  }
+  return(y)
+}
+
+for_5(1:30, 18)
+for_5(letters, "f")
+
+```
+
+Below you find the function call to each loop. Use different function names (e.g., for_1, while_1) and arguments to answer the quiz questions.
+```{r "loop call"}
+# Try out different function calls for the loops below...
+for_4(letters, 10)
+```

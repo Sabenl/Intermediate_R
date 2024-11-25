@@ -1,0 +1,81 @@
+---
+title: "Quizz - Practice Functions, Loops etc."
+author: "Billy"
+date: "2023-11-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Practice
+
+## S3 and S4 Classes
+
+```{r "classes"}
+# S3 class
+S3_function <- function (name, x, y) {
+  S3_obj <- list(x = x, y = y)
+  class(S3_obj) <- name
+  return(S3_obj)
+}
+
+S3_obj <- S3_function("point2D", "Meow", 3)
+
+# S4 class 1
+S4_function_1 <- function (name, x, y) {
+  setClass(name, slots = c(x = "numeric", y = "numeric"))
+  S4_obj <- new(name, x = x, y = y)
+  return(S4_obj)
+}
+
+S4_obj_1 <- S4_function_1("point2D", "Meow", 3)
+
+
+# S4 class 2
+S4_function_2 <- function (name, x, x_type, y, y_type) {
+  setClass(name, slots = c(x = x_type, y = y_type))
+  S4_obj <- new(name, x = x, y = y)
+  return(S4_obj)
+}
+
+S4_obj_2 <- S4_function_2("point2D", 4, "numeric", "Meow", "character")
+
+
+
+# Try out the functions for creating classes below...
+S3_obj <- S3_function("point2D", "Meow", 3)
+S4_obj_1 <- S4_function_1("point2D", "Meow", 3)
+S4_obj_2 <- S4_function_2("point2D", 4, "numeric", "Meow", "character")
+```
+
+## Methods S3
+
+```{r "S3 methods"}
+# S3 Methods
+obj_1 <- list(x = 3, y = 10)
+class(obj_1) <- "Point2D"
+
+# Example of adding and referencing attributes in a class
+attr(obj_1, "levels") <- 1:10
+attributes(obj_1)
+levels(obj_1)
+
+obj_2 <- list(x = -5, y = -12)
+class(obj_2) <- "Point2D"
+
+#S3 generic
+distance <- function(x, y) {
+  UseMethod("distance")
+}
+
+# S3 method
+distance.Point2D <- function(p1, p2) {
+  sqrt((p1$x - p2$x)^2 + (p1$y - p2$y)^2)
+}
+
+distance(obj_1, obj_2)
+distance.Point2D(obj_1, obj_2)
+class(distance.Point2D)
+```

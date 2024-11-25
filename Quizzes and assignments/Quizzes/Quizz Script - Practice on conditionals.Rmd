@@ -1,0 +1,69 @@
+---
+title: "Quizz - Practice Conditionals"
+author: "Billy"
+date: "2023-11-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Practice Conditionals
+
+The first section of code provides you with the different conditionals used for the practice quiz. Make note that each conditional is encapsulated in a function for easy reuse. After finishing the quiz feel free to alter the conditionals yourself to explore use-cases.
+
+```{r "conditional creation"}
+# Conditional 1
+cond_1 <- function(x, y){
+  if (x < y) {
+    z <- "less than"
+  } else if (x > y) {
+    z <- "more than"
+  } else {
+    z <- "equal"
+  }
+  return(z)
+}
+
+cond_1("g", "z")
+
+# Conditional 2
+cond_2 <- function(x, y){
+  if (x == y) {
+    z <- "equal"
+  } else {
+    z <- "not equal"
+  }
+  return(z)
+}
+
+cond_2("g","z")
+
+# Conditional 3
+cond_3 <- function(x, y, relation = "equal"){
+  if (relation == "equal") {
+    if (x == y) {
+     return(TRUE)
+    } else {
+      return(FALSE)
+    }
+  } else if (relation == "not") {
+    if (x != y) {
+     return(TRUE)
+    } else {
+      return(FALSE)
+    }
+  } 
+}
+
+cond_3("g", "z", "not")
+
+```
+
+Below you find the function call to each conditional. Use different function names (e.g., cond_1, cond_3) and arguments to answer the quiz questions.
+
+```{r "conditional call"}
+# Try out the functions for conditionals below...
+cond_3("g", "z", "not")
+```
