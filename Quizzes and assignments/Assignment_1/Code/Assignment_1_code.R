@@ -41,16 +41,13 @@ iris_df <- iris
 head(data_iris)
 write.csv(iris_df, file = "Data/iris_df.csv", row.names = FALSE)
 
-### Create a tibble data frame
+# Add new columns to an analysed data frame
+iris_df_analysed <- iris %>% # Add sepal and petal area
+  mutate(Sepal.Area = Sepal.Length * Sepal.Width,
+         Petal.Area = Petal.Length * Petal.Width)
 
-
-
-### add some stats
-
-### save as csv both og and updated
-
-
-
+# Save as a analysed data in results folder
+write_csv(iris_df_analysed, "Results/iris_with_area.csv")
 
 
 ##############################################
@@ -58,13 +55,13 @@ write.csv(iris_df, file = "Data/iris_df.csv", row.names = FALSE)
 
 
 # Scatter PLot
-ggplot(data=data_iris, aes(x = Sepal.Length, y = Sepal.Width))+
+plot_iris <- ggplot(data=data_iris, aes(x = Sepal.Length, y = Sepal.Width))+
   geom_point(aes(color=Species, shape=Species)) +
   xlab("Sepal Length") +
   ylab("Sepal Width") +
   ggtitle("Sepal Length-Width")
 
-# facet by species
+# Facet by species
 plot_iris1 <- ggplot(data=data_iris, aes(Sepal.Length, y=Sepal.Width, color=Species)) +
   geom_point(aes(shape=Species), size=1.5) +
   xlab("Sepal Length") +
@@ -74,7 +71,8 @@ plot_iris1 <- ggplot(data=data_iris, aes(Sepal.Length, y=Sepal.Width, color=Spec
 plot_iris1_facet <- plot_iris1 + facet_grid(. ~ Species)
 
 
-## save plots
-ggsave(filename = "Assignment_1/Figures/Iris_facet_species.png", plot = last_plot(), dpi = 300)
+## Save plots
+ggsave(filename = "Figures/Iris_species.png", plot = plot_iris, dpi = 300)
+ggsave(filename = "Figures/Iris_facet_species.png", plot = plot_iris1_facet, dpi = 300)
 
 
