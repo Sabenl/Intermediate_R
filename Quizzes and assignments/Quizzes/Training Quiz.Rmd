@@ -65,7 +65,7 @@ The bind_rows() function is part of the dplyr package. It is used to combine mul
 # Use bind_rows() function to combine the list of data frames into a single data frame.
 
 # Your code here
-combined_df <- ______(data_list_named)
+combined_df <- bind_rows(data_list_named)
 combined_df
 
 ```
@@ -79,7 +79,7 @@ The mutate() function is part of the dplyr package and is used to create new col
 
 # Your code here
 combined_df <- combined_df %>%
-  ________(Date = ______(Date))
+  mutate(Date = as.Date(Date))
 combined_df
 
 ```
@@ -93,8 +93,8 @@ The group_by() and summarise() functions are part of the dplyr package. Together
 
 # Your code here
 combined_df %>%
-  group_by(______) %>% 
-  ______(n_missing = ______(is.na(Value)))
+  group_by(Category) %>% 
+  summarise(n_missing = sum(is.na(Value)))
 
 ```
 
@@ -105,8 +105,8 @@ Question 7:
 
 # Your code here
 combined_df %>%
-  ______(Date) %>%
-  summarise(Mean_Value = ______(Value))
+  group_by(Date) %>%
+  summarise(Mean_Value = mean(Value))
 ```
 
 
@@ -120,8 +120,8 @@ The case_when() function in R, part of the dplyr package, allows you to perform 
 # Your code here
 imputed_df <- combined_df %>%
   group_by(Date) %>% 
-  mutate(Value = case_when(______(Value) ~ median(Value, ______ = T),
-                           TRUE ~ ______)) %>% 
+  mutate(Value = case_when(is.na(Value) ~ median(Value, na.rm = T),
+                           TRUE ~ Value)) %>% 
   mutate(Month = months(Date))
 imputed_df
 
@@ -136,8 +136,8 @@ The pivot_wider() function is part of the tidyr package and is used to reshape d
 
 # Your code here
 wide_df <- imputed_df %>%
-  ________(Month) %>% 
-  pivot_wider(________ = Category, ________ = Value)
+  ungroup() %>%  # Remove grouping if any
+  pivot_wider(names_from = Category, values_from = Value)
 wide_df
 
 ```
