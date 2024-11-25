@@ -26,7 +26,7 @@ setwd(Ass_1_WD)
 
 # initialize renv
 renv::init()
-renv::snapshot()
+
 
 # Install the tidyverse package
 install.packages("tidyverse")
@@ -76,3 +76,5 @@ ggsave(filename = "Figures/Iris_species.png", plot = plot_iris, dpi = 300)
 ggsave(filename = "Figures/Iris_facet_species.png", plot = plot_iris1_facet, dpi = 300)
 
 
+# renv lockfile
+renv::snapshot()
