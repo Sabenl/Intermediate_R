@@ -58,14 +58,15 @@ ggsave(plot = scatter_plot, path = "../Quizzes and assignments/Tasks/Figures/", 
 # read the data
 plot3 <- read.csv("../Quizzes and assignments/Tasks/Data/data_plot3.csv", header = TRUE)
 
-ggplot(plot3, aes(x = cty, y = hwy, size = displ)) + 
-  geom_point(color = "brown3") +
+counts_plot <- ggplot(plot3, aes(x = cty, y = hwy)) + 
+  geom_count(color = "brown3") +
   labs(subtitle="mpg: city vs highway mileage",
        title= "Counts plot") + # Adds plot title
+  theme_bw() + 
   theme(legend.position = "none") # removes the legend box# Adds plot title
 
-
-# group by year for size??
+# save the plot as pdf
+ggsave(plot = counts_plot, path = "../Quizzes and assignments/Tasks/Figures/", device = "pdf", filename = "Plot3_counts.pdf")
 
 
 ######## 4 Divergent plot ########
@@ -96,18 +97,26 @@ bar_plot <- ggplot(plot4, aes(y = car_name, x = mpg_z, label = mpg_z)) +
 ggsave(plot = bar_plot, path = "../Quizzes and assignments/Tasks/Figures/", device = "pdf", filename = "Plot4_bar.pdf")
 
 
-# dodge position by group (above/below av mileage)
-# split above/below mileage
-# calc mpg z-score
-
-
-
 ######## 5 Lollipop chart ########
 
 # read the data
 plot5 <- read.csv("../Quizzes and assignments/Tasks/Data/data_plot5.csv", header = TRUE)
 
+lollipop_plot <- ggplot(plot5, aes(x = reorder(manufacturer, mileage), y = mileage)) + 
+  geom_segment( aes(xend=manufacturer, yend=0), color= "grey") +
+  geom_point(stat='identity', color="#E59845", size=3) + 
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 25), breaks = c(0, 5, 10, 15, 20, 25)) + # changes y axis range and breaks
+  theme(panel.grid.minor.x = element_line(size = 0), 
+        panel.grid.major.x = element_line(size = 0),
+        axis.text.x = element_text(angle = 60, vjust = 0.8)) +
+  xlab("") +
+  ylab("Avg. Mileage") + 
+  labs(subtitle="Average city mileage by manufacturer",
+       title= "Lollipop Chart") # Adds plot title
 
+# save the plot as pdf
+ggsave(plot = lollipop_plot, path = "../Quizzes and assignments/Tasks/Figures/", device = "pdf", filename = "Plot5_lollipop.pdf")
 
 
 
@@ -116,4 +125,27 @@ plot5 <- read.csv("../Quizzes and assignments/Tasks/Data/data_plot5.csv", header
 # read the data
 plot6 <- read.csv("../Quizzes and assignments/Tasks/Data/data_plot6.csv", header = TRUE)
 
+# add -log10p column
+plot6$neglog10p <- -log10(plot6$pvalue)
 
+# add a column of NAs
+plot6$diffexpressed <- "NO"
+# if log2Foldchange > 0.5 and pvalue < 0.05, set as "UP" 
+plot6$diffexpressed[plot6$log2FoldChange > 0.6 & plot6$pvalue < 0.05] <- "UP"
+# if log2Foldchange < -0.5 and pvalue < 0.05, set as "DOWN"
+plot6$diffexpressed[plot6$log2FoldChange < -0.6 & plot6$pvalue < 0.05] <- "DOWN"
+
+
+
+# Scatter with l2fc and neglog10 p value
+ggplot(data=plot6, aes(x=log2FoldChange, y=neglog10p, color = diffexpressed)) + 
+  geom_point() +
+  theme_classic() +
+  ylab("-log10 (P-value)") +
+  xlab("log2FC") +
+  ggtitle("Volcano plot") +
+  scale_color_manual(values=c("blue", "black", "red")) +
+  theme(panel.background = element_rect(fill = "#F2F2F2"), 
+        plot.title = element_text(hjust = 0.5))
+
+        
