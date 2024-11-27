@@ -12,6 +12,7 @@ dir.create("../Quizzes and assignments/Tasks/Code")
 # Load librarys
 library(ggplot2)
 library(dplyr)
+library(ggrepel)
 
 ?theme
 
@@ -131,21 +132,29 @@ plot6$neglog10p <- -log10(plot6$pvalue)
 # add a column of NAs
 plot6$diffexpressed <- "NO"
 # if log2Foldchange > 0.5 and pvalue < 0.05, set as "UP" 
-plot6$diffexpressed[plot6$log2FoldChange > 0.6 & plot6$pvalue < 0.05] <- "UP"
+plot6$diffexpressed[plot6$log2FoldChange > 0.5 & plot6$pvalue < 0.05] <- "UP"
 # if log2Foldchange < -0.5 and pvalue < 0.05, set as "DOWN"
-plot6$diffexpressed[plot6$log2FoldChange < -0.6 & plot6$pvalue < 0.05] <- "DOWN"
-
+plot6$diffexpressed[plot6$log2FoldChange < -0.5 & plot6$pvalue < 0.05] <- "DOWN"
+# Create a new column "delabel" to de, that will contain the name of genes differentially expressed (NA in case they are not)
+plot6$delabel <- NA
+plot6$delabel[plot6$diffexpressed != "NO"] <- plot6$gene_symbol[plot6$diffexpressed != "NO"]
 
 
 # Scatter with l2fc and neglog10 p value
-ggplot(data=plot6, aes(x=log2FoldChange, y=neglog10p, color = diffexpressed)) + 
+volcano_plot <- ggplot(data=plot6, aes(x=log2FoldChange, y=neglog10p, color = diffexpressed, label = delabel)) + 
   geom_point() +
+  geom_text_repel(color = "black", 
+                  box.padding = unit(0.2, "lines"),
+                  point.padding = unit(0.2, "lines")) +
   theme_classic() +
   ylab("-log10 (P-value)") +
   xlab("log2FC") +
   ggtitle("Volcano plot") +
   scale_color_manual(values=c("blue", "black", "red")) +
   theme(panel.background = element_rect(fill = "#F2F2F2"), 
-        plot.title = element_text(hjust = 0.5))
+        plot.title = element_text(hjust = 0.5),
+        legend.position = "none")
 
-        
+# save the plot as pdf
+ggsave(plot = volcano_plot, path = "../Quizzes and assignments/Tasks/Figures/", device = "pdf", filename = "Plot6_volcano.pdf")
+
